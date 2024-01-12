@@ -8,7 +8,7 @@ public interface GroceryInfoService {
     List<GroceryInfo> getAllGroceries();
     List<GroceryInfo> getGroceriesByState(String stateName);
     GroceryInfo getGroceryById(int groceryId);
-    GroceryInfo addGrocery(GroceryInfo grocery);
-    GroceryInfo updateGrocery(GroceryInfo grocery);
+    GroceryInfo addGrocery(GroceryInfo grocery, int stateId);
+    GroceryInfo updateGrocery(int id,GroceryInfo grocery);
     void deleteGrocery(int groceryId);
 }
