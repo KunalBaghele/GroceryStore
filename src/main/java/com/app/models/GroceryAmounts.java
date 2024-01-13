@@ -1,6 +1,8 @@
 package com.app.models;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,10 +27,11 @@ public class GroceryAmounts {
     @Column(name = "TOTAL_COST_OF_ITEMS")
     private float totalCostOfItems;
 
-    @OneToMany(mappedBy = "groceryAmounts", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<GroceryInfo> groceryInfoList;
+//    @OneToMany(mappedBy = "groceryAmounts", cascade = CascadeType.ALL)
+//    @JsonIgnore
+//    private List<GroceryInfo> groceryInfoList;
 
-	public long getGroceryAmountId() {
+	public int getGroceryAmountId() {
 		return groceryAmountId;
 	}
 
@@ -51,13 +54,19 @@ public class GroceryAmounts {
 	public void setTotalCostOfItems(float totalCostOfItems) {
 		this.totalCostOfItems = totalCostOfItems;
 	}
+//
+//	public List<GroceryInfo> getGroceryInfoList() {
+//		return groceryInfoList;
+//	}
+//
+//	public void setGroceryInfoList(List<GroceryInfo> groceryInfoList) {
+//		this.groceryInfoList = groceryInfoList;
+//	}
 
-	public List<GroceryInfo> getGroceryInfoList() {
-		return groceryInfoList;
-	}
-
-	public void setGroceryInfoList(List<GroceryInfo> groceryInfoList) {
-		this.groceryInfoList = groceryInfoList;
+	@Override
+	public String toString() {
+		return "GroceryAmounts [groceryAmountId=" + groceryAmountId + ", itemsAvailable=" + itemsAvailable
+				+ ", totalCostOfItems=" + totalCostOfItems + ", groceryInfoList=" + "]";
 	}
 
     

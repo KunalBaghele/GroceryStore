@@ -2,6 +2,8 @@ package com.app.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,8 +24,11 @@ public class GrocerySource {
 
     @Column(name = "STATE_NAME")
     private String stateName;
+    
+    
 
-    @OneToMany(mappedBy = "grocerySource", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "grocerySource", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<GroceryInfo> groceryInfoList;
 
 	public int getSourceId() {

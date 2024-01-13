@@ -1,12 +1,15 @@
 package com.app.models;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,11 +27,12 @@ public class GroceryInfo {
     @Column(name = "COST_PER_ITEM")
     private float costPerItem;
 
-    @ManyToOne
+//    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "GROCERY_AMOUNT_ID")
+    @OneToOne(cascade = CascadeType.PERSIST)
     private GroceryAmounts groceryAmounts;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "SOURCE_ID")
     private GrocerySource grocerySource;
 

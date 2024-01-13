@@ -1,6 +1,7 @@
 package com.app.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,37 +13,91 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.models.GroceryAmounts;
 import com.app.models.GroceryInfo;
-import com.app.service.GroceryInfoService;
+import com.app.models.GrocerySource;
+import com.app.repository.GroceryAmountsRepository;
+import com.app.repository.GrocerySourceRepository;
+import com.app.serviceImpl.GroceryInfoServiceImpl;
 
 @RestController
 @RequestMapping("/api/groceries")
 public class GroceryInfoController {
 
     @Autowired
-    private GroceryInfoService groceryInfoService;
+    private GroceryInfoServiceImpl groceryInfoService;
+    @Autowired
+    private GroceryAmountsRepository groceryAmountRepository;
+    @Autowired
+    private GrocerySourceRepository grocerySourceRepository;
+    
 
     @GetMapping
     public ResponseEntity<List<GroceryInfo>> getAllGroceries() {
-        List<GroceryInfo> groceries = groceryInfoService.getAllGroceries();
-        return new ResponseEntity<>(groceries, HttpStatus.OK);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<GroceryInfo> getGroceryById(@PathVariable int id) {
-        GroceryInfo grocery = groceryInfoService.getGroceryById(id);
-        return new ResponseEntity<>(grocery, HttpStatus.OK);
+        try {
+            List<GroceryInfo> groceries = groceryInfoService.getAllGroceries();
+            return new ResponseEntity<>(groceries, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace(); // or log the exception
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PostMapping
-    public ResponseEntity<GroceryInfo> addGrocery(@RequestBody GroceryInfo grocery,
-                                                  @RequestParam(name = "stateId") int stateId) {
-        GroceryInfo addedGrocery = groceryInfoService.addGrocery(grocery, stateId);
-        return new ResponseEntity<>(addedGrocery, HttpStatus.CREATED);
+    public ResponseEntity<GroceryInfo> addGrocery(@RequestBody Map<String, Object> requestBody) {
+        GroceryInfo groceryInfo = new GroceryInfo();
+        GroceryAmounts groceryAmount = new GroceryAmounts();
+        GrocerySource grocerySource = new GrocerySource();
+
+        try {
+        	System.out.println("Request Payload: " + requestBody);
+            // Extract data for GroceryInfo
+            String groceryName = (String) requestBody.get("groceryName");
+            Double costPerItem = (Double) requestBody.get("costPerItem");
+            // Extract data for GroceryAmounts
+            Integer items = (Integer) requestBody.get("itemsAvailable");
+            // Extract data for GrocerySource
+            Integer sourceId = (Integer) requestBody.get("sourceId");
+            String state=(String) requestBody.get("stateName");
+            System.out.println(groceryName+costPerItem+items+sourceId+state);
+
+            // Calculate totalCostOfItems based on costPerItem and itemsAvailable
+            float totalCost = costPerItem.floatValue()*items.floatValue();
+            System.out.println(totalCost);
+
+            // Create a new GroceryAmounts entity
+            groceryAmount.setItemsAvailable(items);
+            groceryAmount.setTotalCostOfItems(totalCost);
+            // Save the GroceryAmounts entity
+            System.out.println(groceryAmountRepository.save(groceryAmount));
+
+            // Create a new GroceryInfo entity with the provided data
+            groceryInfo.setGroceryName(groceryName);
+            groceryInfo.setCostPerItem(costPerItem.floatValue()); // Set totalCost directly
+            groceryInfo.setGroceryAmounts(groceryAmount);
+           
+ 
+            // Create a new GrocerySource entity
+            grocerySource.setSourceId(sourceId);
+            grocerySource.setStateName(state);
+            groceryInfo.setGrocerySource(grocerySource);
+
+            // Save the GrocerySource entity
+            grocerySourceRepository.save(grocerySource);
+
+            // Save the GroceryInfo entity
+            GroceryInfo addedGrocery = groceryInfoService.addGrocery(groceryInfo);
+
+            return new ResponseEntity<>(addedGrocery, HttpStatus.CREATED);
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the exception or handle it appropriately
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
+
 
     @PutMapping("/{id}")
     public ResponseEntity<GroceryInfo> updateGrocery(@PathVariable int id, @RequestBody GroceryInfo grocery) {
