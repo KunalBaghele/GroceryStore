@@ -76,6 +76,12 @@ public class GroceryInfo {
 		this.grocerySource = grocerySource;
 	}
 
+	@Override
+	public String toString() {
+		return "GroceryInfo [groceryId=" + groceryId + ", groceryName=" + groceryName + ", costPerItem=" + costPerItem
+				+ ", groceryAmounts=" + groceryAmounts + ", grocerySource=" + grocerySource + "]";
+	}
+
     
 }
 
