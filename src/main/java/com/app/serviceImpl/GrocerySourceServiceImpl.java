@@ -17,14 +17,14 @@ public class GrocerySourceServiceImpl implements GrocerySourceService{
 
 	@Override
 	public List<GrocerySource> getAllSources() {
-		grocerySourceRepository.findAll();
-		return null;
+		
+		return grocerySourceRepository.findAll();
 	}
 
 	@Override
 	public GrocerySource getByName(String stateName) {
-		grocerySourceRepository.findByName(stateName);
-		return null;
+		
+		return grocerySourceRepository.findByName(stateName);
 	}
 
 }

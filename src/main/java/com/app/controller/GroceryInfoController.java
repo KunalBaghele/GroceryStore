@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,12 +14,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.app.models.GroceryInfo;
 import com.app.repository.GroceryAmountsRepository;
 import com.app.serviceImpl.GroceryInfoServiceImpl;
 
 @RestController
 @RequestMapping("/api/groceries")
+@CrossOrigin
 public class GroceryInfoController {
 
 	@Autowired
@@ -63,6 +66,7 @@ public class GroceryInfoController {
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> deleteGrocery(@PathVariable int id) {
+		System.out.println(id);
 		groceryInfoService.deleteGrocery(id);
 		groceryAmountRepository.deleteById(id);
 		String message = "Grocery with Id " + id + " deleted successfully.";

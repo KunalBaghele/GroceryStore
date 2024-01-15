@@ -3,11 +3,13 @@ package com.app.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import com.app.models.GrocerySource;
-
+@Repository
 public interface GrocerySourceRepository extends JpaRepository<GrocerySource, Integer> {
 
 	@Query("SELECT g FROM GrocerySource g WHERE g.stateName = :stateName")
     GrocerySource findByName(@Param("stateName") String stateName);
+	
 }
