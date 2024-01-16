@@ -3,6 +3,7 @@ package com.app.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.models.GroceryInfo;
@@ -71,5 +73,11 @@ public class GroceryInfoController {
 		groceryAmountRepository.deleteById(id);
 		String message = "Grocery with Id " + id + " deleted successfully.";
 		return new ResponseEntity<>(message, HttpStatus.OK);
+	}
+	
+	@GetMapping("/byType")
+	public ResponseEntity<List<GroceryInfo>> searchByType(@RequestParam(value = "groceryType") String groceryType) {
+		List<GroceryInfo> searchedGroceryType = groceryInfoService.searchByType(groceryType);
+		return new ResponseEntity<>(searchedGroceryType, HttpStatus.OK);
 	}
 }

@@ -111,6 +111,7 @@ public class GroceryInfoServiceImpl implements GroceryInfoService {
 
 			// Update stateName and grocerySource
 			if (updatedGrocery.getGrocerySource() != null) {
+				System.out.println(updatedGrocery.getGrocerySource().getSourceId());
 				int newStateId = updatedGrocery.getGrocerySource().getSourceId();
 
 				// Check if the state ID is different
@@ -143,5 +144,11 @@ public class GroceryInfoServiceImpl implements GroceryInfoService {
 	@Override
 	public void deleteGrocery(int groceryId) {
 		groceryInfoRepository.deleteById(groceryId);
+	}
+
+	@Override
+	public List<GroceryInfo> searchByType(String groceryType) {
+		List<GroceryInfo> searchedGrocery=groceryInfoRepository.findByGroceryType(groceryType);
+		return searchedGrocery;
 	}
 }

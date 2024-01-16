@@ -23,6 +23,9 @@ public class GroceryInfo {
 
     @Column(name = "GROCERY_NAME")
     private String groceryName;
+    
+    @Column(name = "GROCERY_TYPE")
+    private String groceryType;
 
     @Column(name = "COST_PER_ITEM")
     private float costPerItem;
@@ -50,6 +53,14 @@ public class GroceryInfo {
 
 	public void setGroceryName(String groceryName) {
 		this.groceryName = groceryName;
+	}
+
+	public String getGroceryType() {
+		return groceryType;
+	}
+
+	public void setGroceryType(String groceryType) {
+		this.groceryType = groceryType;
 	}
 
 	public float getCostPerItem() {

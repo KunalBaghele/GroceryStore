@@ -16,4 +16,6 @@ public interface GroceryInfoService {
 	void deleteGrocery(int groceryId);
 
 	Optional<GroceryInfo> getGroceryById(int groceryId);
+	
+	List<GroceryInfo> searchByType(String groceryType);
 }
