@@ -47,8 +47,8 @@ public class GroceryInfoServiceImpl implements GroceryInfoService {
 			int itemsAvailable = grocery.getGroceryAmounts().getItemsAvailable();
 			String state = grocery.getGrocerySource().getStateName();
 
-			// Calculate totalCostOfItems based on costPerItem and itemsAvailable
-			float totalCost = costPerItem * itemsAvailable;
+			// Calculate totalCostOfItems costPerItem and itemsAvailable
+			float totalCost = (float) costPerItem * itemsAvailable;
 
 			// Create a new GroceryAmounts entity
 			groceryAmount.setItemsAvailable(itemsAvailable);
@@ -57,14 +57,14 @@ public class GroceryInfoServiceImpl implements GroceryInfoService {
 			groceryAmountsRepository.save(groceryAmount);
 			grocery.setGroceryAmounts(groceryAmount);
 
-			// Check if GrocerySource with the given state already exists
+			// Check if GrocerySource with the given state exists
 			GrocerySource existingSource = grocerySourceRepository.findByName(state);
 
 			if (existingSource != null) {
-				// If exists, use the existing GrocerySource
+				// If exists use the existing GrocerySource
 				grocerySource = existingSource;
 			} else {
-				// If not exists, create a new GrocerySource and save
+				// If not exists create a new GrocerySource and save
 				grocerySource.setStateName(state);
 				grocerySourceRepository.save(grocerySource);
 			}
@@ -75,7 +75,7 @@ public class GroceryInfoServiceImpl implements GroceryInfoService {
 			grocery.setGroceryName(groceryName);
 			return groceryInfoRepository.save(grocery);
 		} catch (Exception e) {
-			e.printStackTrace(); // Log the exception or handle it appropriately
+			e.printStackTrace(); 
 			throw new RuntimeException("Failed to add grocery", e);
 		}
 	}
@@ -104,7 +104,7 @@ public class GroceryInfoServiceImpl implements GroceryInfoService {
 						.setItemsAvailable(updatedGrocery.getGroceryAmounts().getItemsAvailable());
 
 				// Recalculate total cost based on the new itemsAvailable
-				float newTotalCost = updatedGrocery.getCostPerItem()
+				float newTotalCost = (float) updatedGrocery.getCostPerItem()
 						* updatedGrocery.getGroceryAmounts().getItemsAvailable();
 				existingGrocery.getGroceryAmounts().setTotalCostOfItems(newTotalCost);
 			}
@@ -120,14 +120,13 @@ public class GroceryInfoServiceImpl implements GroceryInfoService {
 					Optional<GrocerySource> existingSourceState = grocerySourceRepository.findById(newStateId);
 
 					if (existingSourceState.isPresent()) {
-						// If exists, use the existing GrocerySource
+						// If exists use the existing GrocerySource
 						existingGrocery.setGrocerySource(existingSourceState.get());
 					} else {
-						// If not exists, create a new GrocerySource and save
+						// If not exists create a new GrocerySource and save
 						GrocerySource newSource = new GrocerySource();
 						newSource.setSourceId(newStateId);
 						newSource.setStateName(updatedGrocery.getGrocerySource().getStateName());
-						// You might want to update other fields in grocerySource as needed
 						grocerySourceRepository.save(newSource);
 						existingGrocery.setGrocerySource(newSource);
 					}
@@ -136,7 +135,6 @@ public class GroceryInfoServiceImpl implements GroceryInfoService {
 			// Save the updated GroceryInfo entity
 			return groceryInfoRepository.save(existingGrocery);
 		} else {
-			// Handle the case where the grocery with the given ID is not found
 			throw new RuntimeException("Grocery not found with ID: " + id);
 		}
 	}
@@ -148,7 +146,7 @@ public class GroceryInfoServiceImpl implements GroceryInfoService {
 
 	@Override
 	public List<GroceryInfo> searchByType(String groceryType) {
-		List<GroceryInfo> searchedGrocery=groceryInfoRepository.findByGroceryType(groceryType);
+		List<GroceryInfo> searchedGrocery = groceryInfoRepository.findByGroceryType(groceryType);
 		return searchedGrocery;
 	}
 }

@@ -30,7 +30,7 @@ public class GroceryInfo {
     @Column(name = "COST_PER_ITEM")
     private float costPerItem;
 
-//    @ManyToOne(fetch = FetchType.EAGER)
+//    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "GROCERY_AMOUNT_ID")
     @OneToOne(cascade = CascadeType.PERSIST)
     private GroceryAmounts groceryAmounts;
