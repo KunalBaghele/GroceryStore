@@ -97,6 +97,7 @@ public class GroceryInfoServiceImpl implements GroceryInfoService {
 			// Update the fields with the new values
 			existingGrocery.setGroceryName(updatedGrocery.getGroceryName());
 			existingGrocery.setCostPerItem(updatedGrocery.getCostPerItem());
+			existingGrocery.setGroceryType(updatedGrocery.getGroceryType());
 
 			// Update itemsAvailable and groceryAmounts
 			if (updatedGrocery.getGroceryAmounts() != null) {

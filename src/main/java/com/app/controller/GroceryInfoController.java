@@ -43,6 +43,7 @@ public class GroceryInfoController {
 
 	@PostMapping
 	public ResponseEntity<GroceryInfo> addGrocery(@RequestBody GroceryInfo grocery) {
+		System.out.println("info : "+grocery);
 		try {
 			GroceryInfo addedGrocery = groceryInfoService.addGrocery(grocery);
 			return new ResponseEntity<>(addedGrocery, HttpStatus.CREATED);
